@@ -245,10 +245,10 @@ class Glyph():
     def CopyBufferToClipBoard(self):
         finalstring = ""
         for y in range(0, self.charheight):
-            if finalstring != "":
+            if y > 0:
                 finalstring += ","
             currentbyte = ""
-            for x in range(0, self.charwidth):
+            for x in range(0, 8):
                 if self.ViewOffsets:
                     cid = self.canvas.find_closest((x+1)*self.square+self.margins,(y+1)*self.square+self.margins)
                 else:
@@ -259,6 +259,23 @@ class Glyph():
                     else:
                         currentbyte += "0"
             finalstring += "{%s}" % (hex( int(currentbyte, 2)))
+        if self.charwidth > 8:
+            finalstring += "\n"
+            for y in range(0, self.charheight):
+                if y > 0:
+                    finalstring += ","
+                currentbyte = ""
+                for x in range(8, 16):
+                    if self.ViewOffsets:
+                        cid = self.canvas.find_closest((x+1)*self.square+self.margins,(y+1)*self.square+self.margins)
+                    else:
+                        cid = self.canvas.find_closest(x*self.square+self.margins,y*self.square+self.margins)
+                    if len(cid) > 0:
+                        if self.canvas.itemcget(cid[0], "fill") == "black":
+                            currentbyte += "1"
+                        else:
+                            currentbyte += "0"
+                finalstring += "{%s}" % (hex( int(currentbyte, 2)))
         self.root.clipboard_clear()
         self.root.clipboard_append(finalstring)
 
