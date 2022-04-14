@@ -24,8 +24,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
-import Tkinter 
-import tkMessageBox 
+import tkinter
+import tkinter.messagebox
 
 class Glyph():
     #
@@ -46,7 +46,7 @@ class Glyph():
         self.margins = 2
 
         # Variable for tracking this Tk Widget's root widget
-        self.root = Tkinter.Tk()
+        self.root = tkinter.Tk()
 
         # Set the Title bar of the widget
         self.root.title("UEFI Glyph Creator")
@@ -61,11 +61,11 @@ class Glyph():
         self.square = self.smallestsquare
 
         # Create a Menu, and configure the root widget to use it
-        menubar = Tkinter.Menu(self.root, tearoff=0)
+        menubar = tkinter.Menu(self.root, tearoff=0)
         self.root.config(menu=menubar)
         
         # Add an Edit Menu to the menu bar
-        EditMenu = Tkinter.Menu(menubar, tearoff=0)
+        EditMenu = tkinter.Menu(menubar, tearoff=0)
         EditMenu.add_command(label="Increase Size", command=self.IncreaseSize)
         EditMenu.add_command(label="Decrease Size", command=self.DecreaseSize)
         EditMenu.add_checkbutton(label="Show Offsets", variable=self.ViewOffsets, command=self.SwitchShowOffsets)
@@ -73,20 +73,20 @@ class Glyph():
         menubar.add_cascade(label="Edit", menu=EditMenu)    
 
         # Add an Options menu to the menu bar
-        OptionsMenu = Tkinter.Menu(menubar, tearoff=0) 
+        OptionsMenu = tkinter.Menu(menubar, tearoff=0) 
         OptionsMenu.add_checkbutton(label="WideChar", variable=self.charwidth, command=self.SwitchToWideChar)
         OptionsMenu.add_command(label="Copy To Clipboard", command=self.CopyBufferToClipBoard)
         OptionsMenu.add_command(label="Import from ClipBoard", command=self.ImportClipBoardToBuffer)
         menubar.add_cascade(label="Options", menu=OptionsMenu)    
 
         # Add a Help menu to the menu bar
-        HelpMenu = Tkinter.Menu(menubar, tearoff=0)
+        HelpMenu = tkinter.Menu(menubar, tearoff=0)
         HelpMenu.add_command(label="About", command=self.About)
         menubar.add_cascade(label="Help", menu=HelpMenu)    
 
         # Create a Canvas widget and add it to the root Widget
-        self.canvas = Tkinter.Canvas(self.root, bg="white")
-        self.canvas.pack(side = Tkinter.TOP, fill=Tkinter.BOTH, expand=1)
+        self.canvas = tkinter.Canvas(self.root, bg="white")
+        self.canvas.pack(side = tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
         # Bind the left mouse button click to function Clicked
         self.root.bind('<Button-1>', self.Clicked)
@@ -103,9 +103,9 @@ class Glyph():
         self.InitializeCanvas()
 
         # Create a status bar that show the current Width and Height
-        self.StatusBar = Tkinter.Label(self.root, text="", bd=1, relief=Tkinter.GROOVE, anchor=Tkinter.W)
+        self.StatusBar = tkinter.Label(self.root, text="", bd=1, relief=tkinter.GROOVE, anchor=tkinter.W)
         self.StatusBar.config(text="Width = %d Height = %d  " %( self.charwidth, self.charheight))
-        self.StatusBar.pack(side=Tkinter.TOP, fill=Tkinter.X)
+        self.StatusBar.pack(side=tkinter.TOP, fill=tkinter.X)
 
         # Start the Widget
         self.root.mainloop()
@@ -132,7 +132,7 @@ class Glyph():
     # Display a About this application popup box
     #
     def About(self):
-        tkMessageBox.showinfo("About this application...", "Python application to allow Glyph creation for both Wide Characters and Narrow Characters.")
+        tkinter.messagebox.showinfo("About this application...", "Python application to allow Glyph creation for both Wide Characters and Narrow Characters.")
 
     #
     # Increase the size of the canvas area
@@ -293,8 +293,8 @@ class Glyph():
                 RetBuf.append( [int(value,16) >> i & 1 for i in range(self.charwidth-1,-1,-1)] )
             self.InitializeCanvas(RetBuf)
         except:
-            tkMessageBox.showinfo("Import Error", "Error Importing from the clipboard")
-            print "Error on buffer"
+            tkinter.messagebox.showinfo("Import Error", "Error Importing from the clipboard")
+            print("Error on buffer")
 
     #
     # Using the mouse click event information (x, y) find the closest item and if that item is 
